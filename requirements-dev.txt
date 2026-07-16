@@ -1,0 +1,4 @@
+modal
+pydantic
+ruff
+pytest
