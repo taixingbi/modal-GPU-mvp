@@ -40,8 +40,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Modal
-        run: pip install modal
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
 
       - name: Deploy smoke-test app
         run: modal deploy app.py
