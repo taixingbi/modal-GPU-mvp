@@ -98,6 +98,18 @@ Behavior:
 - Pull requests: lint + tests only.
 - Push to `main`: lint + tests, then `modal deploy` for both apps.
 
+## Stop / start (cost control)
+
+Idle apps already scale to zero, so GPU cost is only incurred while a request is running. To go further and remove the small ongoing Volume storage cost, or to take the endpoints fully offline:
+
+```bash
+./scripts/stop.sh          # stop both apps; HTTPS URLs go dead, code stays
+./scripts/stop.sh --purge  # also delete the huggingface-cache volume (~7 GB)
+./scripts/start.sh         # redeploy both apps and restore the endpoints
+```
+
+`stop.sh` runs `modal app stop`; `--purge` additionally deletes the model-weight cache (SDXL-Turbo re-downloads on the next cold start). `start.sh` runs `modal deploy` for both apps. Pushing to `main` also redeploys via CI.
+
 ## Notes
 
 - Containers scale to zero when idle (`scaledown_window` controls how long they stay warm). No `min_containers` is set, so there is no idle GPU cost.
